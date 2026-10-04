@@ -1,0 +1,44 @@
+-- =====================================================================
+-- PulseOps: 00_setup.sql
+-- Database, Schema, Warehouse (XS with 60s auto-suspend), and Resource Monitor
+-- =====================================================================
+
+-- Parameters / Variables
+SET DB_NAME = 'PULSEOPS_PROD';
+SET SCHEMA_NAME = 'CORE';
+SET WH_NAME = 'PULSEOPS_XS_WH';
+SET ROLE_NAME = 'PULSEOPS_ADMIN';
+SET MONITOR_NAME = 'PULSEOPS_CREDIT_MONITOR';
+
+-- 1. Create Role & Grant Permissions
+CREATE ROLE IF NOT EXISTS IDENTIFIER($ROLE_NAME);
+GRANT ROLE IDENTIFIER($ROLE_NAME) TO CURRENT_USER();
+
+-- 2. Create Resource Monitor with hard credit cap (cost control)
+CREATE OR REPLACE RESOURCE MONITOR IDENTIFIER($MONITOR_NAME)
+    WITH CREDIT_QUOTA = 10
+    FREQUENCY = MONTHLY
+    START_TIMESTAMP = IMMEDIATELY
+    TRIGGERS 
+        ON 80 PERCENT DO NOTIFY
+        ON 95 PERCENT DO NOTIFY
+        ON 100 PERCENT DO SUSPEND;
+
+-- 3. Create XS Warehouse with 60s auto-suspend
+CREATE OR REPLACE WAREHOUSE IDENTIFIER($WH_NAME)
+    WITH WAREHOUSE_SIZE = 'X-SMALL'
+    AUTO_SUSPEND = 60
+    AUTO_RESUME = TRUE
+    INITIALLY_SUSPENDED = TRUE
+    RESOURCE_MONITOR = IDENTIFIER($MONITOR_NAME)
+    COMMENT = 'PulseOps XS Warehouse with 60s auto-suspend for minimal credit burn';
+
+-- 4. Create Database and Schema
+CREATE DATABASE IF NOT EXISTS IDENTIFIER($DB_NAME);
+USE DATABASE IDENTIFIER($DB_NAME);
+
+CREATE SCHEMA IF NOT EXISTS IDENTIFIER($SCHEMA_NAME);
+USE SCHEMA IDENTIFIER($SCHEMA_NAME);
+
+GRANT ALL ON DATABASE IDENTIFIER($DB_NAME) TO ROLE IDENTIFIER($ROLE_NAME);
+GRANT ALL ON SCHEMA IDENTIFIER($SCHEMA_NAME) TO ROLE IDENTIFIER($ROLE_NAME);

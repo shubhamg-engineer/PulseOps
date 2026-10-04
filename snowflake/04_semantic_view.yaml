@@ -1,0 +1,126 @@
+name: pulseops_semantic_model
+description: Unified Semantic Model for PulseOps Predictive Maintenance and OEE Command Center
+
+tables:
+  - name: PRODUCTION_RUNS
+    base_table:
+      database: PULSEOPS_PROD
+      schema: CORE
+      table: PRODUCTION_RUNS
+    dimensions:
+      - name: run_id
+        type: categorical
+        expr: run_id
+      - name: asset_id
+        type: categorical
+        expr: asset_id
+      - name: shift_date
+        type: time
+        expr: shift_date
+      - name: shift
+        type: categorical
+        expr: shift
+    measures:
+      - name: total_planned_minutes
+        expr: planned_minutes
+        agg: sum
+        description: Total scheduled production minutes
+      - name: total_run_minutes
+        expr: run_minutes
+        agg: sum
+        description: Total actual operating minutes
+      - name: total_downtime_minutes
+        expr: downtime_minutes
+        agg: sum
+        description: Total unplanned breakdown and stoppage minutes
+      - name: total_ideal_units
+        expr: ideal_units
+        agg: sum
+        description: Theoretical maximum production output
+      - name: total_actual_units
+        expr: actual_units
+        agg: sum
+        description: Total physical units produced
+      - name: total_good_units
+        expr: good_units
+        agg: sum
+        description: Total defect-free first-pass units
+
+  - name: ASSETS
+    base_table:
+      database: PULSEOPS_PROD
+      schema: CORE
+      table: ASSETS
+    dimensions:
+      - name: asset_id
+        type: categorical
+        expr: asset_id
+      - name: asset_name
+        type: categorical
+        expr: asset_name
+      - name: plant_id
+        type: categorical
+        expr: plant_id
+      - name: line_id
+        type: categorical
+        expr: line_id
+      - name: asset_type
+        type: categorical
+        expr: asset_type
+      - name: criticality
+        type: categorical
+        expr: criticality
+
+metrics:
+  - name: availability
+    description: Operational Availability Ratio (Run Time / Planned Time)
+    expr: SUM(PRODUCTION_RUNS.run_minutes) / NULLIF(SUM(PRODUCTION_RUNS.planned_minutes), 0)
+    format: percentage
+
+  - name: performance
+    description: Performance Efficiency Ratio (Actual Units / Ideal Units)
+    expr: SUM(PRODUCTION_RUNS.actual_units) / NULLIF(SUM(PRODUCTION_RUNS.ideal_units), 0)
+    format: percentage
+
+  - name: quality
+    description: Quality Yield Ratio (Good Units / Actual Units)
+    expr: SUM(PRODUCTION_RUNS.good_units) / NULLIF(SUM(PRODUCTION_RUNS.actual_units), 0)
+    format: percentage
+
+  - name: oee
+    description: Overall Equipment Effectiveness (Availability * Performance * Quality)
+    expr: (SUM(PRODUCTION_RUNS.run_minutes) / NULLIF(SUM(PRODUCTION_RUNS.planned_minutes), 0)) * (SUM(PRODUCTION_RUNS.actual_units) / NULLIF(SUM(PRODUCTION_RUNS.ideal_units), 0)) * (SUM(PRODUCTION_RUNS.good_units) / NULLIF(SUM(PRODUCTION_RUNS.actual_units), 0))
+    format: percentage
+
+  - name: total_downtime_cost
+    description: Total downtime cost in INR
+    expr: SUM((PRODUCTION_RUNS.downtime_minutes / 60.0) * ASSETS.downtime_cost_per_hr_inr)
+    format: currency_inr
+
+relationships:
+  - name: runs_to_assets
+    join_type: left_outer
+    relationship_type: many_to_one
+    left_table: PRODUCTION_RUNS
+    right_table: ASSETS
+    condition: PRODUCTION_RUNS.asset_id = ASSETS.asset_id
+
+verified_queries:
+  - name: fleet_oee_summary
+    question: "What is the overall fleet OEE?"
+    sql: |
+      SELECT 
+        (SUM(p.run_minutes)::FLOAT / SUM(p.planned_minutes)) *
+        (SUM(p.actual_units)::FLOAT / SUM(p.ideal_units)) *
+        (SUM(p.good_units)::FLOAT / SUM(p.actual_units)) AS oee
+      FROM PRODUCTION_RUNS p;
+
+  - name: plant_oee_breakdown
+    question: "What is the OEE breakdown by plant?"
+    sql: |
+      SELECT 
+        a.plant_id,
+        ROUND((SUM(p.run_minutes)::FLOAT / SUM(p.planned_minutes)) * (SUM(p.actual_units)::FLOAT / SUM(p.ideal_units)) * (SUM(p.good_units)::FLOAT / SUM(p.actual_units)), 4) AS oee
+      FROM PRODUCTION_RUNS p
+      JOIN ASSETS a ON p.asset_id = a.asset_id
+      GROUP BY a.plant_id;

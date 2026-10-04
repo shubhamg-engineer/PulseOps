@@ -1,0 +1,24 @@
+# PulseOps Configuration (PRD 3 Contract)
+app_name: "PulseOps"
+tagline: "Industrial OT Telemetry & Predictive Maintenance Intelligence Platform"
+display_tz: "Asia/Kolkata"
+stale_data_threshold_minutes: 60
+
+# Risk Threshold Bands
+risk_bands:
+  healthy_max: 0.30
+  watch_max: 0.60
+  at_risk_max: 0.80
+  # critical is >= 0.80
+
+default_period_days: 7
+alert_window_hours: 72
+default_planned_fix_factor: 0.40
+resample_rule: "15min"
+max_series_points: 2000
+
+# Demo Settings
+demo:
+  replay_clock_default: "2026-09-29T23:55:00Z"
+  failure_story_asset_id: "AST_101"
+  failure_story_as_of: "2026-09-25T12:00:00Z"

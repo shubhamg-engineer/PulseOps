@@ -1,0 +1,45 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# Unit test / coverage reports
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Virtual Environments & secrets
+.env
+.venv/
+venv/
+env/
+
+# All generated data (rebuilt with `make data`)
+data/
+
+# Trained model artifacts (rebuilt with `make train`)
+*.joblib
+*.pkl
+*.joblib.*
+reports/
+
+# Local DuckDB database & locks
+*.duckdb
+*.duckdb.wal
+
+# Graphify cache
+graphify-out/cache/
+
+# OS / Editor artifacts
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

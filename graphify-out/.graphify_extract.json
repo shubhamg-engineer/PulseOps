@@ -1,0 +1,296 @@
+{
+  "nodes": [
+    {
+      "id": "PRD_1_Antigravity_Build",
+      "label": "PRD 1: PulseOps Build Everything",
+      "type": "document",
+      "source_file": "PRD_1_Antigravity_Build.md",
+      "summary": "PRD for building complete PulseOps predictive maintenance & OEE command center locally."
+    },
+    {
+      "id": "PulseOps",
+      "label": "PulseOps Command Center",
+      "type": "product",
+      "source_file": "PRD_1_Antigravity_Build.md",
+      "summary": "Predictive Maintenance and OEE Command Center converging OT sensor data with ERP/maintenance context."
+    },
+    {
+      "id": "Snowflake_CoCo",
+      "label": "Snowflake CoCo (PRD 2)",
+      "type": "external",
+      "source_file": "PRD_1_Antigravity_Build.md",
+      "summary": "Second stage tool connecting DB, deploying, and testing in Snowflake environment."
+    },
+    {
+      "id": "Ground_Rules",
+      "label": "Core Ground Rules",
+      "type": "policy",
+      "source_file": "PRD_1_Antigravity_Build.md",
+      "summary": "Local-first, Snowflake-ready (written not run), DuckDB/Snowflake backend switch, metric truth, synthetic data."
+    },
+    {
+      "id": "Synthetic_Data_Gen",
+      "label": "Synthetic Data Generator (P0)",
+      "type": "module",
+      "source_file": "PRD_1_Antigravity_Build.md",
+      "summary": "Generates 25 assets, 3 plants, 60 days, 5-min intervals (~430k rows) with seeded failure physics."
+    },
+    {
+      "id": "Data_Model_Tables",
+      "label": "Unified Data Model",
+      "type": "schema",
+      "source_file": "PRD_1_Antigravity_Build.md",
+      "summary": "ASSETS, SENSOR_READINGS, MAINTENANCE_ORDERS, PRODUCTION_RUNS, SPARE_PARTS, KNOWLEDGE_DOCS, ALERTS."
+    },
+    {
+      "id": "Failure_Physics",
+      "label": "Failure Physics & Signatures",
+      "type": "domain",
+      "source_file": "PRD_1_Antigravity_Build.md",
+      "summary": "18-25 events: Bearing wear (48-96h), Misalignment (24-72h), Overheating (24-48h), Motor winding (12-36h)."
+    },
+    {
+      "id": "Metrics_Engine",
+      "label": "OEE & Reliability Metrics",
+      "type": "metric",
+      "source_file": "PRD_1_Antigravity_Build.md",
+      "summary": "Availability, Performance, Quality, OEE, MTBF, MTTR, Downtime Cost calculation definitions."
+    },
+    {
+      "id": "Feature_Engineering_F1",
+      "label": "F1: Rolling Feature Engineering",
+      "type": "pipeline",
+      "source_file": "PRD_1_Antigravity_Build.md",
+      "summary": "1h/6h/24h mean/max/std, vibration slope, 14-day baseline deviations, and RPM variance via SQL."
+    },
+    {
+      "id": "Failure_Prediction_F2",
+      "label": "F2: ML Failure Prediction Model",
+      "type": "ml_model",
+      "source_file": "PRD_1_Antigravity_Build.md",
+      "summary": "Gradient-boosted classifier predicting 72h failure window, risk score, failure mode, and top signals with time split."
+    },
+    {
+      "id": "Command_Center_UI_F3",
+      "label": "F3: Streamlit Command Center UI",
+      "type": "frontend",
+      "source_file": "PRD_1_Antigravity_Build.md",
+      "summary": "Fleet KPI & heatmap, ranked alert queue, asset drill-down trends, root-cause chat panel, and OEE impact."
+    },
+    {
+      "id": "Root_Cause_Agent_F4",
+      "label": "F4: Root-Cause NL Agent",
+      "type": "agent",
+      "source_file": "PRD_1_Antigravity_Build.md",
+      "summary": "Router + DuckDB SQL metric queries + semantic search over KNOWLEDGE_DOCS with cited titles and guardrails."
+    },
+    {
+      "id": "Work_Order_Flow_F5",
+      "label": "F5: Work-Order Automation",
+      "type": "workflow",
+      "source_file": "PRD_1_Antigravity_Build.md",
+      "summary": "Agent drafts action + parts check + shift window; requires human approval before writing to MAINTENANCE_ORDERS."
+    },
+    {
+      "id": "OEE_Impact_Simulation_F6",
+      "label": "F6: OEE & Financial Impact Simulation",
+      "type": "analytics",
+      "source_file": "PRD_1_Antigravity_Build.md",
+      "summary": "60-day historical replay converting emergency downtime to 40% planned fix, calculating ₹ savings and OEE uplift."
+    },
+    {
+      "id": "Snowflake_Deployment_Pack",
+      "label": "Snowflake Deployment Pack (/snowflake)",
+      "type": "deployment",
+      "source_file": "PRD_1_Antigravity_Build.md",
+      "summary": "Numbered idempotent scripts: 00_setup to 08_streamlit_notes plus DEPLOY.md with XS warehouse & resource monitors."
+    },
+    {
+      "id": "Handoff_Deliverables",
+      "label": "PRD 2 Handoff Deliverables",
+      "type": "handoff",
+      "source_file": "PRD_1_Antigravity_Build.md",
+      "summary": "COCO_HANDOFF.md, golden_values.json, agent_questions.yaml test suite, and staged synthetic data."
+    },
+    {
+      "id": "Build_Order_Pipeline",
+      "label": "10-Step Execution Process",
+      "type": "process",
+      "source_file": "PRD_1_Antigravity_Build.md",
+      "summary": "Scaffold -> Data Gen -> DuckDB/Metrics -> ML Model -> Data Layer -> Agent Tools -> UI -> Snowflake -> Tests -> Demo."
+    }
+  ],
+  "edges": [
+    {
+      "source": "PRD_1_Antigravity_Build",
+      "target": "PulseOps",
+      "type": "DEFINES",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "PRD_1_Antigravity_Build",
+      "target": "Ground_Rules",
+      "type": "MANDATES",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "PRD_1_Antigravity_Build",
+      "target": "Build_Order_Pipeline",
+      "type": "SPECIFIES",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "PulseOps",
+      "target": "Synthetic_Data_Gen",
+      "type": "USES_DATA",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "Synthetic_Data_Gen",
+      "target": "Data_Model_Tables",
+      "type": "POPULATES",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "Synthetic_Data_Gen",
+      "target": "Failure_Physics",
+      "type": "SIMULATES",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "Data_Model_Tables",
+      "target": "Metrics_Engine",
+      "type": "CALCULATED_BY",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "Data_Model_Tables",
+      "target": "Feature_Engineering_F1",
+      "type": "INPUTS_TO",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "Feature_Engineering_F1",
+      "target": "Failure_Prediction_F2",
+      "type": "FEEDS_FEATURES",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "Failure_Prediction_F2",
+      "target": "Data_Model_Tables",
+      "type": "WRITES_ALERTS",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "Failure_Prediction_F2",
+      "target": "Command_Center_UI_F3",
+      "type": "DISPLAYS_IN",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "Metrics_Engine",
+      "target": "Command_Center_UI_F3",
+      "type": "RENDERS_METRICS",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "Command_Center_UI_F3",
+      "target": "Root_Cause_Agent_F4",
+      "type": "HOSTS_PANEL",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "Root_Cause_Agent_F4",
+      "target": "Data_Model_Tables",
+      "type": "QUERIES_SQL_AND_DOCS",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "Root_Cause_Agent_F4",
+      "target": "Work_Order_Flow_F5",
+      "type": "DRAFTS_ORDER",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "Work_Order_Flow_F5",
+      "target": "Data_Model_Tables",
+      "type": "WRITES_APPROVED_ORDER",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "Failure_Prediction_F2",
+      "target": "OEE_Impact_Simulation_F6",
+      "type": "EVALUATES_AVOIDED_FAILURES",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "OEE_Impact_Simulation_F6",
+      "target": "Command_Center_UI_F3",
+      "type": "DISPLAYS_IMPACT",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "PulseOps",
+      "target": "Snowflake_Deployment_Pack",
+      "type": "EXPORTS_MAPPINGS",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "Snowflake_Deployment_Pack",
+      "target": "Handoff_Deliverables",
+      "type": "PACKAGES_INTO",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "Handoff_Deliverables",
+      "target": "Snowflake_CoCo",
+      "type": "HANDS_OFF_TO",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "Build_Order_Pipeline",
+      "target": "Synthetic_Data_Gen",
+      "type": "EXECUTES_STEP_2",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "Build_Order_Pipeline",
+      "target": "Metrics_Engine",
+      "type": "EXECUTES_STEP_3",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "Build_Order_Pipeline",
+      "target": "Failure_Prediction_F2",
+      "type": "EXECUTES_STEP_4",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "Build_Order_Pipeline",
+      "target": "Root_Cause_Agent_F4",
+      "type": "EXECUTES_STEP_6",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "Build_Order_Pipeline",
+      "target": "Command_Center_UI_F3",
+      "type": "EXECUTES_STEP_7",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "Build_Order_Pipeline",
+      "target": "Snowflake_Deployment_Pack",
+      "type": "EXECUTES_STEP_8",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "Build_Order_Pipeline",
+      "target": "Handoff_Deliverables",
+      "type": "EXECUTES_STEP_9_10",
+      "confidence": "EXTRACTED"
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 1691,
+  "output_tokens": 950
+}

@@ -1,0 +1,102 @@
+{
+  "table_row_counts": {
+    "ASSETS": 25,
+    "SPARE_PARTS": 12,
+    "KNOWLEDGE_DOCS": 35,
+    "SENSOR_READINGS": 432000,
+    "MAINTENANCE_ORDERS": 122,
+    "PRODUCTION_RUNS": 4500,
+    "ALERTS": 10
+  },
+  "fleet_oee": {
+    "availability": 0.9872,
+    "performance": 0.9423,
+    "quality": 0.9762,
+    "oee": 0.9081,
+    "total_planned_hours": 36000.0,
+    "total_run_hours": 35538.8,
+    "total_downtime_hours": 461.2,
+    "total_actual_units": 3256642,
+    "total_good_units": 3179261
+  },
+  "plant_oee": [
+    {
+      "plant_id": "PLANT_CHENNAI",
+      "planned_mins": 691200.0,
+      "run_mins": 682748.0,
+      "downtime_mins": 8452.0,
+      "ideal_units": 1065600.0,
+      "actual_units": 1004783.0,
+      "good_units": 980856.0,
+      "availability": 0.9878,
+      "performance": 0.9429,
+      "quality": 0.9762,
+      "oee": 0.9092
+    },
+    {
+      "plant_id": "PLANT_GURUGRAM",
+      "planned_mins": 691200.0,
+      "run_mins": 682509.0,
+      "downtime_mins": 8691.0,
+      "ideal_units": 1065600.0,
+      "actual_units": 1003758.0,
+      "good_units": 979839.0,
+      "availability": 0.9874,
+      "performance": 0.942,
+      "quality": 0.9762,
+      "oee": 0.908
+    },
+    {
+      "plant_id": "PLANT_PUNE",
+      "planned_mins": 777600.0,
+      "run_mins": 767072.0,
+      "downtime_mins": 10528.0,
+      "ideal_units": 1324800.0,
+      "actual_units": 1248101.0,
+      "good_units": 1218566.0,
+      "availability": 0.9865,
+      "performance": 0.9421,
+      "quality": 0.9763,
+      "oee": 0.9074
+    }
+  ],
+  "reliability": {
+    "operating_hours": 35538.8,
+    "total_failures": 22,
+    "mtbf_hours": 1615.4,
+    "mttr_hours": 5.24
+  },
+  "total_downtime_cost_inr": 5579483.33,
+  "top_risk_assets": [
+    {
+      "asset_id": "AST_115",
+      "risk_score": 0.9997,
+      "predicted_failure_mode": "Misalignment"
+    },
+    {
+      "asset_id": "AST_107",
+      "risk_score": 0.9996,
+      "predicted_failure_mode": "Misalignment"
+    },
+    {
+      "asset_id": "AST_118",
+      "risk_score": 0.8928,
+      "predicted_failure_mode": "Motor winding fault"
+    },
+    {
+      "asset_id": "AST_106",
+      "risk_score": 0.8854,
+      "predicted_failure_mode": "Motor winding fault"
+    },
+    {
+      "asset_id": "AST_116",
+      "risk_score": 0.8716,
+      "predicted_failure_mode": "Motor winding fault"
+    }
+  ],
+  "model_metrics": {
+    "target_window_hours": 72,
+    "min_lead_time_requirement_hours": 24.0,
+    "observed_median_lead_time_hours": 63.8
+  }
+}

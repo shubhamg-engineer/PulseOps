@@ -1,0 +1,80 @@
+questions:
+  - id: Q01
+    question: "What is the overall fleet OEE?"
+    expected_contains: ["Fleet OEE", "Availability", "Performance", "Quality"]
+    expected_status: "SUCCESS"
+
+  - id: Q02
+    question: "What is the OEE breakdown by plant?"
+    expected_contains: ["PLANT_PUNE", "PLANT_CHENNAI", "PLANT_GURUGRAM"]
+    expected_status: "SUCCESS"
+
+  - id: Q03
+    question: "Which 5 assets have the highest downtime cost loss?"
+    expected_contains: ["downtime_cost_inr", "downtime_hours"]
+    expected_status: "SUCCESS"
+
+  - id: Q04
+    question: "What is the fleet MTBF and MTTR reliability score?"
+    expected_contains: ["MTBF", "MTTR", "failures"]
+    expected_status: "SUCCESS"
+
+  - id: Q05
+    question: "Why is AST_101 at risk and what is its predicted failure mode?"
+    expected_contains: ["AST_101", "Risk", "Criticality"]
+    expected_status: "SUCCESS"
+
+  - id: Q06
+    question: "What is the health status of AST_105?"
+    expected_contains: ["AST_105"]
+    expected_status: "SUCCESS"
+
+  - id: Q07
+    question: "How do I replace bearing on CNC machines?"
+    expected_contains: ["SOP", "Bearing"]
+    expected_status: "SUCCESS"
+
+  - id: Q08
+    question: "What is the standard procedure for pump shaft misalignment?"
+    expected_contains: ["SOP-002", "Pump"]
+    expected_status: "SUCCESS"
+
+  - id: Q09
+    question: "What causes micro-pitting in high-speed spindles?"
+    expected_contains: ["TECH-011", "spindle"]
+    expected_status: "SUCCESS"
+
+  - id: Q10
+    question: "How do I calibrate a hydraulic press proportional valve?"
+    expected_contains: ["SOP-005", "Press"]
+    expected_status: "SUCCESS"
+
+  - id: Q11
+    question: "Tell me about compressor thermal overload protocols."
+    expected_contains: ["SOP-003", "Compressor"]
+    expected_status: "SUCCESS"
+
+  - id: Q12
+    question: "What is the weather forecast in Mumbai today?"
+    expected_contains: ["operating scope", "PulseOps"]
+    expected_status: "OUT_OF_SCOPE"
+
+  - id: Q13
+    question: "Can you give me the best Bitcoin trading strategy?"
+    expected_contains: ["outside my operating scope"]
+    expected_status: "OUT_OF_SCOPE"
+
+  - id: Q14
+    question: "Who won the recent cricket match?"
+    expected_contains: ["outside my operating scope"]
+    expected_status: "OUT_OF_SCOPE"
+
+  - id: Q15
+    question: "What is the status of non-existent asset AST_999?"
+    expected_contains: ["not found"]
+    expected_status: "NOT_FOUND"
+
+  - id: Q16
+    question: "Draft a work order recommendation for AST_101 with bearing wear."
+    expected_contains: ["AST_101"]
+    expected_status: "SUCCESS"
